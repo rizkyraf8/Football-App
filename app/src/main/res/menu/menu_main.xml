@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/iHome"
+        android:icon="@drawable/ic_football_field"
+        android:iconTint="@color/black"
+        android:title="Matchs" />
+    <item
+        android:id="@+id/iToko"
+        android:icon="@drawable/ic_football"
+        android:iconTint="@color/black"
+        android:title="Teams" />
+    <item
+        android:id="@+id/iFav"
+        android:icon="@drawable/ic_stars_primary_24dp"
+        android:iconTint="@color/black"
+        android:title="Favorite" />
+</menu>
