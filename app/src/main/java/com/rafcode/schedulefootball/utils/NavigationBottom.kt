@@ -2,6 +2,7 @@ package com.rafcode.schedulefootball.utils
 
 import android.app.Activity
 import android.content.Context
+import androidx.core.content.ContextCompat
 
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationAdapter
@@ -17,22 +18,24 @@ class NavigationBottom(internal var context: Context, bottomNavigation: AHBottom
         this.bottomNavigation = bottomNavigation
     }
 
-    fun setBottomNavigation(mOnNavigationItemSelectedListener: AHBottomNavigation.OnTabSelectedListener,
-                            Selected: Int) {
+    fun setBottomNavigation(
+        mOnNavigationItemSelectedListener: AHBottomNavigation.OnTabSelectedListener,
+        Selected: Int
+    ) {
 
-        val tabColors = context.resources.getColor(R.color.white)
+        val tabColors = ContextCompat.getColor(context, R.color.white)
         val navigationAdapter = AHBottomNavigationAdapter(context as Activity, R.menu.menu_main)
         navigationAdapter.setupWithBottomNavigation(bottomNavigation, intArrayOf(tabColors))
 
         // Set background color
-        bottomNavigation.defaultBackgroundColor = context.resources.getColor(R.color.white)
+        bottomNavigation.defaultBackgroundColor = ContextCompat.getColor(context, R.color.white)
 
         // Disable the translation inside the CoordinatorLayout
         bottomNavigation.isBehaviorTranslationEnabled = false
 
         // Change colors
         // bottomNavigation.setAccentColor(Color.parseColor("#F63D2B"));
-        bottomNavigation.accentColor = context.resources.getColor(R.color.colorAccent)
+        bottomNavigation.accentColor = ContextCompat.getColor(context, R.color.colorAccent)
         bottomNavigation.isForceTint = true
         bottomNavigation.isTranslucentNavigationEnabled = false
 

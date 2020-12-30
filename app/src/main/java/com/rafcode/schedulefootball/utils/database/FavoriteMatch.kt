@@ -1,7 +1,5 @@
 package com.rafcode.schedulefootball.utils.database
 
-import com.google.gson.Gson
-
 class FavoriteMatch(val idEvent: Int, val gson: String) {
 
     companion object {

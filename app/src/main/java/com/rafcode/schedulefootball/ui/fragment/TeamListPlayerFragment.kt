@@ -1,58 +1,55 @@
 package com.rafcode.schedulefootball.ui.fragment
 
-import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v7.widget.LinearLayoutManager
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.rafcode.schedulefootball.R
 import com.rafcode.schedulefootball.api.response.Player
-import com.rafcode.schedulefootball.api.response.Players
+import com.rafcode.schedulefootball.api.response.PlayerResponse
+import com.rafcode.schedulefootball.databinding.FragmentListTeamBinding
 import com.rafcode.schedulefootball.repository.ApiRepository
+import com.rafcode.schedulefootball.repository.PlayerView
 import com.rafcode.schedulefootball.ui.adapter.PlayerAdapter
 import com.rafcode.schedulefootball.ui.presenter.PlayerPresenter
-import com.rafcode.schedulefootball.ui.view.PlayerView
-import com.rafcode.schedulefootball.utils.TempData
-import kotlinx.android.synthetic.main.fragment_list_team.*
 
-open class TeamListPlayerFragment : Fragment(){
+open class TeamListPlayerFragment(private val idTeam: String) :
+    BaseFragment<FragmentListTeamBinding>() {
 
     private var fragment: TeamListPlayerFragment? = null
 
-    lateinit var mAdapter: PlayerAdapter
-    var mPlayer = ArrayList<Player>()
+    private lateinit var mAdapter: PlayerAdapter
+    private var mPlayer = ArrayList<Player>()
 
     private lateinit var matchPresenter: PlayerPresenter
 
     fun getInstance(): TeamListPlayerFragment {
         if (fragment == null) {
-            fragment = TeamListPlayerFragment()
+            fragment = TeamListPlayerFragment(idTeam)
         }
         return fragment as TeamListPlayerFragment
     }
 
-    fun clearInstance() {
-        if (fragment != null) fragment = null
-    }
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_list_team, container, false)
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onFragmentCreated() {
         initRv()
         initPlayer()
     }
 
+    override fun onFragmentClick() {
+    }
+
+    override fun layout(): Int {
+        return R.layout.fragment_list_team
+    }
+
     private fun initRv() {
-        val glmanager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
-        mAdapter = PlayerAdapter(activity!!, mPlayer)
-        rvPlayer.layoutManager = glmanager
-        rvPlayer.adapter = mAdapter
-        rvPlayer.hasFixedSize()
-        rvPlayer.isNestedScrollingEnabled = true
+        val glmanager = LinearLayoutManager(
+            activity,
+            LinearLayoutManager.VERTICAL,
+            false
+        )
+        mAdapter = PlayerAdapter(mPlayer)
+        binding.rvPlayer.layoutManager = glmanager
+        binding.rvPlayer.adapter = mAdapter
+        binding.rvPlayer.hasFixedSize()
+        binding.rvPlayer.isNestedScrollingEnabled = true
     }
 
 
@@ -64,10 +61,10 @@ open class TeamListPlayerFragment : Fragment(){
             override fun onHideLoadingPlayer() {
             }
 
-            override fun onDataLoaded(data: Players?) {
+            override fun onDataLoaded(data: PlayerResponse?) {
                 mAdapter.clear()
-                data?.player?.forEach { data ->
-                    mAdapter.reCreate(data)
+                data?.player?.let { item ->
+                    mAdapter.reCreate(item)
                 }
             }
 
@@ -75,7 +72,7 @@ open class TeamListPlayerFragment : Fragment(){
             }
         }, ApiRepository())
 
-        matchPresenter.getPlayerLeague(TempData.teams?.idTeam.toString())
+        matchPresenter.getPlayerLeague(getUser().token.toString(), idTeam)
     }
 
 }

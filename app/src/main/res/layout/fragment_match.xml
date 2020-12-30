@@ -1,40 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.fragment.LastMatchFragment">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools">
 
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/srlMatch"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <RelativeLayout
+    <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="10dp">
+            tools:context=".ui.fragment.LastMatchFragment">
 
-            <Spinner
-                android:id="@+id/spinner"
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                android:id="@+id/srlMatch"
                 android:layout_width="match_parent"
-                android:layout_height="40dp" />
+                android:layout_height="match_parent">
 
-            <ProgressBar
-                android:id="@+id/pbLoading"
-                android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:layout_below="@id/spinner"
-                android:layout_marginTop="10dp"
-                android:visibility="gone" />
+            <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="10dp">
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/rvMatch"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_below="@id/spinner"
-                android:layout_marginTop="10dp" />
-        </RelativeLayout>
-    </android.support.v4.widget.SwipeRefreshLayout>
+                <Spinner
+                        android:id="@+id/spinner"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp" />
 
-</RelativeLayout>
+                <ProgressBar
+                        android:id="@+id/pbLoading"
+                        android:layout_width="match_parent"
+                        android:layout_height="30dp"
+                        android:layout_below="@id/spinner"
+                        android:layout_marginTop="10dp"
+                        android:visibility="gone" />
+
+                <androidx.core.widget.NestedScrollView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_below="@id/spinner"
+                        android:layout_marginTop="12dp">
+
+                    <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                        <androidx.recyclerview.widget.RecyclerView
+                                android:id="@+id/rvMatch"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:nestedScrollingEnabled="false" />
+                    </RelativeLayout>
+                </androidx.core.widget.NestedScrollView>
+            </RelativeLayout>
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    </RelativeLayout>
+</layout>

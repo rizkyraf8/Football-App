@@ -2,12 +2,11 @@ package com.rafcode.schedulefootball.api.response
 
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
-import com.rafcode.schedulefootball.api.response.Event
 
-class Players {
+class EventResponse {
 
-    @SerializedName("player")
+    @SerializedName("events")
     @Expose
-    var player: List<Player>? = null
+    var events: List<Event>? = null
 
 }

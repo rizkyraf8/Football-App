@@ -2,62 +2,67 @@ package com.rafcode.schedulefootball.ui.activity
 
 import android.app.SearchManager
 import android.content.Context
-import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.SearchView
 import android.view.Menu
 import android.view.View
+import androidx.appcompat.widget.SearchView
+import androidx.databinding.DataBindingUtil
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.rafcode.schedulefootball.R
 import com.rafcode.schedulefootball.api.response.Team
-import com.rafcode.schedulefootball.api.response.Teams
+import com.rafcode.schedulefootball.api.response.TeamResponse
+import com.rafcode.schedulefootball.databinding.ActivitySearchTeamBinding
 import com.rafcode.schedulefootball.repository.ApiRepository
+import com.rafcode.schedulefootball.repository.TeamView
 import com.rafcode.schedulefootball.ui.adapter.TeamAdapter
 import com.rafcode.schedulefootball.ui.presenter.TeamPresenter
-import com.rafcode.schedulefootball.ui.view.TeamView
-import kotlinx.android.synthetic.main.activity_search_team.*
-import kotlinx.android.synthetic.main.content_search_team.*
 
-class SearchTeamActivity : AppCompatActivity() {
+class SearchTeamActivity : BaseActivity<ActivitySearchTeamBinding>() {
 
-    lateinit var mAdapter: TeamAdapter
-    var mTeam = ArrayList<Team>()
-    var key = ""
+    override fun getViewBinding(): ActivitySearchTeamBinding {
+        return DataBindingUtil.setContentView(this, R.layout.activity_search_team)
+    }
 
-    private lateinit var teamPresenter: TeamPresenter
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_search_team)
-
-        key = intent.getStringExtra("key")
-
+    override fun onActivityCreated() {
         initToolbar()
-
-
         initRv()
         initTeam(key)
     }
 
+    override fun onActivityClick() {
+
+    }
+
+    lateinit var mAdapter: TeamAdapter
+    private var mTeam = ArrayList<Team>()
+    private val key: String by lazy {
+        intent.getStringExtra("key").toString()
+    }
+
+    private lateinit var teamPresenter: TeamPresenter
+
     private fun initToolbar() {
-        setSupportActionBar(toolbar)
+        setSupportActionBar(binding.toolbar)
         supportActionBar?.title = key
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
     private fun initRv() {
-        val glmanager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        val glmanager = LinearLayoutManager(
+            this,
+            LinearLayoutManager.VERTICAL,
+            false
+        )
         mAdapter = TeamAdapter(this, mTeam)
-        rvTeam.layoutManager = glmanager
-        rvTeam.adapter = mAdapter
-        rvTeam.hasFixedSize()
-        rvTeam.isNestedScrollingEnabled = true
+        binding.layout.rvTeam.layoutManager = glmanager
+        binding.layout.rvTeam.adapter = mAdapter
+        binding.layout.rvTeam.hasFixedSize()
+        binding.layout.rvTeam.isNestedScrollingEnabled = true
 
     }
 
     fun initTeam(team: String) {
         mAdapter.clear()
-        pbLoading.visibility = View.VISIBLE
+        binding.layout.pbLoading.visibility = View.VISIBLE
         teamPresenter = TeamPresenter(object : TeamView {
             override fun onShowLoadingTeam() {
             }
@@ -65,24 +70,25 @@ class SearchTeamActivity : AppCompatActivity() {
             override fun onHideLoadingTeam() {
             }
 
-            override fun onDataLoaded(data: Teams?) {
-                data?.teams?.forEach { data ->
-                    mAdapter.reCreate(data)
+            override fun onDataLoaded(data: TeamResponse?) {
+                data?.teams?.let { item ->
+                    mAdapter.reCreate(item)
                 }
-                pbLoading.visibility = View.GONE
+                binding.layout.pbLoading.visibility = View.GONE
             }
 
             override fun onDataError() {
             }
         }, ApiRepository())
 
-        teamPresenter.getTeamSearch(team)
+        teamPresenter.getTeamSearch(getUser().token.toString(), team)
     }
 
     override fun onSupportNavigateUp(): Boolean {
         finish()
         return super.onSupportNavigateUp()
     }
+
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_search, menu)
         val sManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager

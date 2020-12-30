@@ -3,43 +3,49 @@ package com.rafcode.schedulefootball
 import android.app.SearchManager
 import android.content.Context
 import android.content.Intent
-import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.SearchView
 import android.view.Menu
+import android.view.MenuItem
+import androidx.appcompat.widget.SearchView
+import androidx.databinding.DataBindingUtil
+import com.afollestad.materialdialogs.MaterialDialog
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation
-import com.rafcode.schedulefootball.api.response.Leagues
+import com.rafcode.schedulefootball.api.response.LeagueResponse
+import com.rafcode.schedulefootball.databinding.ActivityMainBinding
 import com.rafcode.schedulefootball.repository.ApiRepository
+import com.rafcode.schedulefootball.repository.LeagueView
+import com.rafcode.schedulefootball.ui.activity.BaseActivity
+import com.rafcode.schedulefootball.ui.activity.LoginActivity
 import com.rafcode.schedulefootball.ui.activity.SearchMatchActivity
 import com.rafcode.schedulefootball.ui.activity.SearchTeamActivity
 import com.rafcode.schedulefootball.ui.fragment.FavoriteFragment
 import com.rafcode.schedulefootball.ui.fragment.MatchFragment
 import com.rafcode.schedulefootball.ui.fragment.TeamFragment
 import com.rafcode.schedulefootball.ui.presenter.LeaguePresenter
-import com.rafcode.schedulefootball.ui.view.LeagueView
 import com.rafcode.schedulefootball.utils.NavigationBottom
+import com.rafcode.schedulefootball.utils.PrefHelper
 import com.rafcode.schedulefootball.utils.database
 import com.rafcode.schedulefootball.utils.database.LeagueDatabase
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.content_main.*
 import org.jetbrains.anko.db.classParser
 import org.jetbrains.anko.db.insert
 import org.jetbrains.anko.db.select
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : BaseActivity<ActivityMainBinding>() {
 
-    lateinit var navigationBottom: NavigationBottom
-    lateinit var menu: Menu
-    var postionMenu = 0
+    private val navigationBottom: NavigationBottom by lazy {
+        NavigationBottom(this, binding.layout.bnMenu)
+    }
+    private var menu: Menu? = null
+    private var postionMenu = 0
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+    override fun getViewBinding(): ActivityMainBinding {
+        return DataBindingUtil.setContentView(this, R.layout.activity_main)
+    }
+
+    override fun onActivityCreated() {
         initToolbar()
 
-        initNavigationBottom(0)
+        initNavigationBottom()
 
         database.use {
             val result = select(LeagueDatabase.TABLE_LEAGUE)
@@ -48,110 +54,98 @@ class MainActivity : AppCompatActivity() {
             if (league.isEmpty()) {
                 initLeague()
             } else {
-                setFragment(0, 0)
+                displayFragment(0)
             }
         }
     }
 
-    fun initToolbar() {
-        setSupportActionBar(toolbar)
+    override fun onActivityClick() {
+
     }
 
-    fun initNavigationBottom(selected: Int) {
-        navigationBottom = NavigationBottom(this, bnMenu)
+    private fun initToolbar() {
+        setSupportActionBar(binding.toolbar)
+    }
+
+    private fun initNavigationBottom() {
         navigationBottom.setBottomNavigation(AHBottomNavigation.OnTabSelectedListener { position, _ ->
-            when (position) {
-                1 -> {
-                    setFragment(1, 1)
-                }
-                2 -> {
-                    setFragment(2, 2)
-                }
-                else -> {
-                    setFragment(0, 0)
+            displayFragment(position)
+            false
+        }, 0)
+    }
+
+    private val fragment = listOf(
+        MatchFragment.Companion.newInstance(),
+        TeamFragment.Companion.newInstance(),
+        FavoriteFragment.Companion.newInstance()
+
+    )
+
+    fun displayFragment(position: Int) {
+        navigationBottom.bottomNavigation.setCurrentItem(position, false)
+
+        supportFragmentManager.beginTransaction().apply {
+            if (fragment[position].isAdded) {
+                show(fragment[position])
+            } else {
+                add(R.id.fragment, fragment[position], fragment[position].tag)
+            }
+
+            supportFragmentManager.fragments.forEach {
+                if (it != fragment[position] && it.isAdded) {
+                    hide(it)
                 }
             }
-            false
-        }, selected)
-    }
 
-    fun setFragment(pos: Int, selected: Int) {
-        try {
-            navigationBottom.bottomNavigation.setCurrentItem(selected, false)
-            supportFragmentManager.beginTransaction()
-                    .replace(R.id.fragment, getFragment(pos))
-                    .commit()
-
-            when (pos) {
+            when (position) {
                 0 -> {
                     postionMenu = 0
-                    menu.getItem(0).isVisible = true
+                    menu?.getItem(0)?.isVisible = true
+                    menu?.getItem(1)?.isVisible = false
                 }
                 1 -> {
                     postionMenu = 1
-                    menu.getItem(0).isVisible = true
+                    menu?.getItem(0)?.isVisible = true
+                    menu?.getItem(1)?.isVisible = false
                 }
                 2 -> {
-                    menu.getItem(0).isVisible = false
+                    menu?.getItem(0)?.isVisible = false
+                    menu?.getItem(1)?.isVisible = true
                 }
             }
-        } catch (ignored: Exception) {
-            ignored.printStackTrace()
-        }
+        }.commit()
 
-    }
-
-    fun getFragment(pos: Int): Fragment {
-        var fragment: Fragment? = null
-
-        when (pos) {
-            0 -> {
-                fragment = MatchFragment().newInstance()
-            }
-            1 -> {
-                fragment = TeamFragment().newInstance()
-            }
-            2 -> {
-                fragment = FavoriteFragment().newInstance()
-            }
-        }
-
-        return fragment!!
     }
 
     private fun initLeague() {
         val leaguePresenter = LeaguePresenter(object : LeagueView {
             override fun onShowLoadingLeague() {
-
+                getProgressDialog("Mempersiapkan data...")
             }
 
             override fun onHideLoadingLeague() {
-
             }
 
-            override fun onDataLoaded(data: Leagues?) {
-                data?.leagues?.forEach { data ->
-                    if (data.strSport.equals("Soccer")) {
-                        database.use {
-                            insert(
-                                    LeagueDatabase.TABLE_LEAGUE,
-                                    LeagueDatabase.idLeague to data.idLeague,
-                                    LeagueDatabase.strLeague to data.strLeague + "",
-                                    LeagueDatabase.strSport to data.strSport + "",
-                                    LeagueDatabase.strLeagueAlternate to data.strLeagueAlternate + ""
-                            )
-                        }
+            override fun onDataLoaded(data: LeagueResponse?) {
+                data?.leagues?.forEach { item ->
+                    database.use {
+                        insert(
+                            LeagueDatabase.TABLE_LEAGUE,
+                            LeagueDatabase.idLeague to item.idLeague,
+                            LeagueDatabase.strLeague to item.strLeague + "",
+                            LeagueDatabase.strSport to item.strSport + "",
+                            LeagueDatabase.strLeagueAlternate to item.strLeagueAlternate + ""
+                        )
                     }
                 }
-
-                setFragment(0, 0)
-
+                displayFragment(0)
+                dismisProgressDialog()
             }
 
             override fun onDataError() {
             }
         }, ApiRepository())
-        leaguePresenter.getAllLeague()
+        leaguePresenter.getAllLeague(getUser().token.toString())
 
     }
 
@@ -187,5 +181,29 @@ class MainActivity : AppCompatActivity() {
         })
 
         return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.menu_logout -> {
+                MaterialDialog(this).show {
+                    title(null, "Konfirmasi")
+                    message(null, "Kamu yakin ingin keluar?")
+                    positiveButton(null, "Yakin") { dialog ->
+                        val prefHelper = PrefHelper(activity)
+                        prefHelper.clearPreference(PrefHelper.PrefKey.BOOLEAN_IS_LOGIN)
+                        prefHelper.clearPreference(PrefHelper.PrefKey.OBJECT_USER)
+                        startActivity(Intent(activity, LoginActivity::class.java))
+                        finish()
+                        dialog.dismiss()
+                    }
+                    negativeButton(null, "Batal") { dialog ->
+                        dialog.dismiss()
+                    }
+                }
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 }

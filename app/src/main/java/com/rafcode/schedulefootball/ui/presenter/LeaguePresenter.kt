@@ -1,21 +1,22 @@
 package com.rafcode.schedulefootball.ui.presenter
 
-import android.util.Log
-import com.google.gson.Gson
-import com.rafcode.schedulefootball.api.response.Leagues
+import com.rafcode.schedulefootball.api.response.LeagueResponse
 import com.rafcode.schedulefootball.repository.ApiRepository
 import com.rafcode.schedulefootball.repository.ApiRepositoryCallback
-import com.rafcode.schedulefootball.ui.view.LeagueView
+import com.rafcode.schedulefootball.repository.LeagueView
 
 class LeaguePresenter(private val view: LeagueView, private val apiRepository: ApiRepository) {
 
-    fun getAllLeague() {
-        apiRepository.getAllLeagues(object : ApiRepositoryCallback<Leagues?> {
-            override fun onDataLoaded(data: Leagues?) {
+    fun getAllLeague(token: String) {
+        view.onShowLoadingLeague()
+        apiRepository.getAllLeagues(token, object : ApiRepositoryCallback<LeagueResponse?> {
+            override fun onDataLoaded(data: LeagueResponse?) {
+                view.onHideLoadingLeague()
                 view.onDataLoaded(data)
             }
 
             override fun onDataError() {
+                view.onHideLoadingLeague()
                 view.onDataError()
             }
         })

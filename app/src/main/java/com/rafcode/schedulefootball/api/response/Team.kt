@@ -1,157 +1,328 @@
 package com.rafcode.schedulefootball.api.response
 
+import android.os.Parcel
+import android.os.Parcelable
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
-class Team {
+class Team() : Parcelable {
     @SerializedName("idTeam")
     @Expose
-    val idTeam: String? = null
+    var idTeam: String? = null
+
     @SerializedName("idSoccerXML")
     @Expose
-    val idSoccerXML: String? = null
+    var idSoccerXML: String? = null
+
     @SerializedName("intLoved")
     @Expose
-    val intLoved: String? = null
+    var intLoved: String? = null
+
     @SerializedName("strTeam")
     @Expose
-    val strTeam: String? = null
+    var strTeam: String? = null
+
     @SerializedName("strTeamShort")
     @Expose
-    val strTeamShort: String? = null
+    var strTeamShort: String? = null
+
     @SerializedName("strAlternate")
     @Expose
-    val strAlternate: String? = null
+    var strAlternate: String? = null
+
     @SerializedName("intFormedYear")
     @Expose
-    val intFormedYear: String? = null
+    var intFormedYear: String? = null
+
     @SerializedName("strSport")
     @Expose
-    val strSport: String? = null
+    var strSport: String? = null
+
     @SerializedName("strLeague")
     @Expose
-    val strLeague: String? = null
+    var strLeague: String? = null
+
     @SerializedName("idLeague")
     @Expose
-    val idLeague: String? = null
+    var idLeague: String? = null
+
     @SerializedName("strDivision")
     @Expose
-    val strDivision: String? = null
+    var strDivision: String? = null
+
     @SerializedName("strManager")
     @Expose
-    val strManager: String? = null
+    var strManager: String? = null
+
     @SerializedName("strStadium")
     @Expose
-    val strStadium: String? = null
+    var strStadium: String? = null
+
     @SerializedName("strKeywords")
     @Expose
-    val strKeywords: String? = null
+    var strKeywords: String? = null
+
     @SerializedName("strRSS")
     @Expose
-    val strRSS: String? = null
+    var strRSS: String? = null
+
     @SerializedName("strStadiumThumb")
     @Expose
-    val strStadiumThumb: String? = null
+    var strStadiumThumb: String? = null
+
     @SerializedName("strStadiumDescription")
     @Expose
-    val strStadiumDescription: String? = null
+    var strStadiumDescription: String? = null
+
     @SerializedName("strStadiumLocation")
     @Expose
-    val strStadiumLocation: String? = null
+    var strStadiumLocation: String? = null
+
     @SerializedName("intStadiumCapacity")
     @Expose
-    val intStadiumCapacity: String? = null
+    var intStadiumCapacity: String? = null
+
     @SerializedName("strWebsite")
     @Expose
-    val strWebsite: String? = null
+    var strWebsite: String? = null
+
     @SerializedName("strFacebook")
     @Expose
-    val strFacebook: String? = null
+    var strFacebook: String? = null
+
     @SerializedName("strTwitter")
     @Expose
-    val strTwitter: String? = null
+    var strTwitter: String? = null
+
     @SerializedName("strInstagram")
     @Expose
-    val strInstagram: String? = null
+    var strInstagram: String? = null
+
     @SerializedName("strDescriptionEN")
     @Expose
-    val strDescriptionEN: String? = null
+    var strDescriptionEN: String? = null
+
     @SerializedName("strDescriptionDE")
     @Expose
-    val strDescriptionDE: String? = null
+    var strDescriptionDE: String? = null
+
     @SerializedName("strDescriptionFR")
     @Expose
-    val strDescriptionFR: String? = null
+    var strDescriptionFR: String? = null
+
     @SerializedName("strDescriptionCN")
     @Expose
-    val strDescriptionCN: String? = null
+    var strDescriptionCN: String? = null
+
     @SerializedName("strDescriptionIT")
     @Expose
-    val strDescriptionIT: String? = null
+    var strDescriptionIT: String? = null
+
     @SerializedName("strDescriptionJP")
     @Expose
-    val strDescriptionJP: String? = null
+    var strDescriptionJP: String? = null
+
     @SerializedName("strDescriptionRU")
     @Expose
-    val strDescriptionRU: String? = null
+    var strDescriptionRU: String? = null
+
     @SerializedName("strDescriptionES")
     @Expose
-    val strDescriptionES: String? = null
+    var strDescriptionES: String? = null
+
     @SerializedName("strDescriptionPT")
     @Expose
-    val strDescriptionPT: String? = null
+    var strDescriptionPT: String? = null
+
     @SerializedName("strDescriptionSE")
     @Expose
-    val strDescriptionSE: String? = null
+    var strDescriptionSE: String? = null
+
     @SerializedName("strDescriptionNL")
     @Expose
-    val strDescriptionNL: String? = null
+    var strDescriptionNL: String? = null
+
     @SerializedName("strDescriptionHU")
     @Expose
-    val strDescriptionHU: String? = null
+    var strDescriptionHU: String? = null
+
     @SerializedName("strDescriptionNO")
     @Expose
-    val strDescriptionNO: String? = null
+    var strDescriptionNO: String? = null
+
     @SerializedName("strDescriptionIL")
     @Expose
-    val strDescriptionIL: String? = null
+    var strDescriptionIL: String? = null
+
     @SerializedName("strDescriptionPL")
     @Expose
-    val strDescriptionPL: String? = null
+    var strDescriptionPL: String? = null
+
     @SerializedName("strGender")
     @Expose
-    val strGender: String? = null
+    var strGender: String? = null
+
     @SerializedName("strCountry")
     @Expose
-    val strCountry: String? = null
+    var strCountry: String? = null
+
     @SerializedName("strTeamBadge")
     @Expose
-    val strTeamBadge: String? = null
+    var strTeamBadge: String? = null
+
     @SerializedName("strTeamJersey")
     @Expose
-    val strTeamJersey: String? = null
+    var strTeamJersey: String? = null
+
     @SerializedName("strTeamLogo")
     @Expose
-    val strTeamLogo: String? = null
+    var strTeamLogo: String? = null
+
     @SerializedName("strTeamFanart1")
     @Expose
-    val strTeamFanart1: String? = null
+    var strTeamFanart1: String? = null
+
     @SerializedName("strTeamFanart2")
     @Expose
-    val strTeamFanart2: String? = null
+    var strTeamFanart2: String? = null
+
     @SerializedName("strTeamFanart3")
     @Expose
-    val strTeamFanart3: String? = null
+    var strTeamFanart3: String? = null
+
     @SerializedName("strTeamFanart4")
     @Expose
-    val strTeamFanart4: String? = null
+    var strTeamFanart4: String? = null
+
     @SerializedName("strTeamBanner")
     @Expose
-    val strTeamBanner: String? = null
+    var strTeamBanner: String? = null
+
     @SerializedName("strYoutube")
     @Expose
-    val strYoutube: String? = null
+    var strYoutube: String? = null
+
     @SerializedName("strLocked")
     @Expose
-    val strLocked: String? = null
+    var strLocked: String? = null
+
+    constructor(parcel: Parcel) : this() {
+        idTeam = parcel.readString()
+        idSoccerXML = parcel.readString()
+        intLoved = parcel.readString()
+        strTeam = parcel.readString()
+        strTeamShort = parcel.readString()
+        strAlternate = parcel.readString()
+        intFormedYear = parcel.readString()
+        strSport = parcel.readString()
+        strLeague = parcel.readString()
+        idLeague = parcel.readString()
+        strDivision = parcel.readString()
+        strManager = parcel.readString()
+        strStadium = parcel.readString()
+        strKeywords = parcel.readString()
+        strRSS = parcel.readString()
+        strStadiumThumb = parcel.readString()
+        strStadiumDescription = parcel.readString()
+        strStadiumLocation = parcel.readString()
+        intStadiumCapacity = parcel.readString()
+        strWebsite = parcel.readString()
+        strFacebook = parcel.readString()
+        strTwitter = parcel.readString()
+        strInstagram = parcel.readString()
+        strDescriptionEN = parcel.readString()
+        strDescriptionDE = parcel.readString()
+        strDescriptionFR = parcel.readString()
+        strDescriptionCN = parcel.readString()
+        strDescriptionIT = parcel.readString()
+        strDescriptionJP = parcel.readString()
+        strDescriptionRU = parcel.readString()
+        strDescriptionES = parcel.readString()
+        strDescriptionPT = parcel.readString()
+        strDescriptionSE = parcel.readString()
+        strDescriptionNL = parcel.readString()
+        strDescriptionHU = parcel.readString()
+        strDescriptionNO = parcel.readString()
+        strDescriptionIL = parcel.readString()
+        strDescriptionPL = parcel.readString()
+        strGender = parcel.readString()
+        strCountry = parcel.readString()
+        strTeamBadge = parcel.readString()
+        strTeamJersey = parcel.readString()
+        strTeamLogo = parcel.readString()
+        strTeamFanart1 = parcel.readString()
+        strTeamFanart2 = parcel.readString()
+        strTeamFanart3 = parcel.readString()
+        strTeamFanart4 = parcel.readString()
+        strTeamBanner = parcel.readString()
+        strYoutube = parcel.readString()
+        strLocked = parcel.readString()
+    }
+
+    override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeString(idTeam)
+        parcel.writeString(idSoccerXML)
+        parcel.writeString(intLoved)
+        parcel.writeString(strTeam)
+        parcel.writeString(strTeamShort)
+        parcel.writeString(strAlternate)
+        parcel.writeString(intFormedYear)
+        parcel.writeString(strSport)
+        parcel.writeString(strLeague)
+        parcel.writeString(idLeague)
+        parcel.writeString(strDivision)
+        parcel.writeString(strManager)
+        parcel.writeString(strStadium)
+        parcel.writeString(strKeywords)
+        parcel.writeString(strRSS)
+        parcel.writeString(strStadiumThumb)
+        parcel.writeString(strStadiumDescription)
+        parcel.writeString(strStadiumLocation)
+        parcel.writeString(intStadiumCapacity)
+        parcel.writeString(strWebsite)
+        parcel.writeString(strFacebook)
+        parcel.writeString(strTwitter)
+        parcel.writeString(strInstagram)
+        parcel.writeString(strDescriptionEN)
+        parcel.writeString(strDescriptionDE)
+        parcel.writeString(strDescriptionFR)
+        parcel.writeString(strDescriptionCN)
+        parcel.writeString(strDescriptionIT)
+        parcel.writeString(strDescriptionJP)
+        parcel.writeString(strDescriptionRU)
+        parcel.writeString(strDescriptionES)
+        parcel.writeString(strDescriptionPT)
+        parcel.writeString(strDescriptionSE)
+        parcel.writeString(strDescriptionNL)
+        parcel.writeString(strDescriptionHU)
+        parcel.writeString(strDescriptionNO)
+        parcel.writeString(strDescriptionIL)
+        parcel.writeString(strDescriptionPL)
+        parcel.writeString(strGender)
+        parcel.writeString(strCountry)
+        parcel.writeString(strTeamBadge)
+        parcel.writeString(strTeamJersey)
+        parcel.writeString(strTeamLogo)
+        parcel.writeString(strTeamFanart1)
+        parcel.writeString(strTeamFanart2)
+        parcel.writeString(strTeamFanart3)
+        parcel.writeString(strTeamFanart4)
+        parcel.writeString(strTeamBanner)
+        parcel.writeString(strYoutube)
+        parcel.writeString(strLocked)
+    }
+
+    override fun describeContents(): Int {
+        return 0
+    }
+
+    companion object CREATOR : Parcelable.Creator<Team> {
+        override fun createFromParcel(parcel: Parcel): Team {
+            return Team(parcel)
+        }
+
+        override fun newArray(size: Int): Array<Team?> {
+            return arrayOfNulls(size)
+        }
+    }
 }

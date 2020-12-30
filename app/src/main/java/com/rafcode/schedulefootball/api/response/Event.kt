@@ -1,162 +1,336 @@
 package com.rafcode.schedulefootball.api.response
 
+import android.os.Parcel
+import android.os.Parcelable
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
-class Event {
+class Event() : Parcelable {
 
     @SerializedName("idEvent")
     @Expose
     var idEvent: String? = null
+
     @SerializedName("idSoccerXML")
     @Expose
     var idSoccerXML: String? = null
+
     @SerializedName("strEvent")
     @Expose
     var strEvent: String? = null
+
     @SerializedName("strFilename")
     @Expose
     var strFilename: String? = null
+
     @SerializedName("strSport")
     @Expose
     var strSport: String? = null
+
     @SerializedName("idLeague")
     @Expose
     var idLeague: String? = null
+
     @SerializedName("strLeague")
     @Expose
     var strLeague: String? = null
+
     @SerializedName("strSeason")
     @Expose
     var strSeason: String? = null
+
     @SerializedName("strDescriptionEN")
     @Expose
-    var strDescriptionEN: Any? = null
+    var strDescriptionEN: String? = null
+
     @SerializedName("strHomeTeam")
     @Expose
     var strHomeTeam: String? = null
+
     @SerializedName("strAwayTeam")
     @Expose
     var strAwayTeam: String? = null
+
     @SerializedName("intHomeScore")
     @Expose
-    var intHomeScore: Any? = null
+    var intHomeScore: String? = null
+
     @SerializedName("intRound")
     @Expose
     var intRound: String? = null
+
     @SerializedName("intAwayScore")
     @Expose
-    var intAwayScore: Any? = null
+    var intAwayScore: String? = null
+
     @SerializedName("intSpectators")
     @Expose
-    var intSpectators: Any? = null
+    var intSpectators: String? = null
+
     @SerializedName("strHomeGoalDetails")
     @Expose
-    var strHomeGoalDetails: Any? = null
+    var strHomeGoalDetails: String? = null
+
     @SerializedName("strHomeRedCards")
     @Expose
-    var strHomeRedCards: Any? = null
+    var strHomeRedCards: String? = null
+
     @SerializedName("strHomeYellowCards")
     @Expose
-    var strHomeYellowCards: Any? = null
+    var strHomeYellowCards: String? = null
+
     @SerializedName("strHomeLineupGoalkeeper")
     @Expose
-    var strHomeLineupGoalkeeper: Any? = null
+    var strHomeLineupGoalkeeper: String? = null
+
     @SerializedName("strHomeLineupDefense")
     @Expose
-    var strHomeLineupDefense: Any? = null
+    var strHomeLineupDefense: String? = null
+
     @SerializedName("strHomeLineupMidfield")
     @Expose
-    var strHomeLineupMidfield: Any? = null
+    var strHomeLineupMidfield: String? = null
+
     @SerializedName("strHomeLineupForward")
     @Expose
-    var strHomeLineupForward: Any? = null
+    var strHomeLineupForward: String? = null
+
     @SerializedName("strHomeLineupSubstitutes")
     @Expose
-    var strHomeLineupSubstitutes: Any? = null
+    var strHomeLineupSubstitutes: String? = null
+
     @SerializedName("strHomeFormation")
     @Expose
-    var strHomeFormation: Any? = null
+    var strHomeFormation: String? = null
+
     @SerializedName("strAwayRedCards")
     @Expose
-    var strAwayRedCards: Any? = null
+    var strAwayRedCards: String? = null
+
     @SerializedName("strAwayYellowCards")
     @Expose
-    var strAwayYellowCards: Any? = null
+    var strAwayYellowCards: String? = null
+
     @SerializedName("strAwayGoalDetails")
     @Expose
-    var strAwayGoalDetails: Any? = null
+    var strAwayGoalDetails: String? = null
+
     @SerializedName("strAwayLineupGoalkeeper")
     @Expose
-    var strAwayLineupGoalkeeper: Any? = null
+    var strAwayLineupGoalkeeper: String? = null
+
     @SerializedName("strAwayLineupDefense")
     @Expose
-    var strAwayLineupDefense: Any? = null
+    var strAwayLineupDefense: String? = null
+
     @SerializedName("strAwayLineupMidfield")
     @Expose
-    var strAwayLineupMidfield: Any? = null
+    var strAwayLineupMidfield: String? = null
+
     @SerializedName("strAwayLineupForward")
     @Expose
-    var strAwayLineupForward: Any? = null
+    var strAwayLineupForward: String? = null
+
     @SerializedName("strAwayLineupSubstitutes")
     @Expose
-    var strAwayLineupSubstitutes: Any? = null
+    var strAwayLineupSubstitutes: String? = null
+
     @SerializedName("strAwayFormation")
     @Expose
-    var strAwayFormation: Any? = null
+    var strAwayFormation: String? = null
+
     @SerializedName("intHomeShots")
     @Expose
-    var intHomeShots: Any? = null
+    var intHomeShots: String? = null
+
     @SerializedName("intAwayShots")
     @Expose
-    var intAwayShots: Any? = null
+    var intAwayShots: String? = null
+
     @SerializedName("dateEvent")
     @Expose
     var dateEvent: String? = null
+
     @SerializedName("strDate")
     @Expose
     var strDate: String? = null
+
     @SerializedName("strTime")
     @Expose
     var strTime: String? = null
+
     @SerializedName("strTVStation")
     @Expose
-    var strTVStation: Any? = null
+    var strTVStation: String? = null
+
     @SerializedName("idHomeTeam")
     @Expose
     var idHomeTeam: String? = null
+
     @SerializedName("idAwayTeam")
     @Expose
     var idAwayTeam: String? = null
+
     @SerializedName("strResult")
     @Expose
-    var strResult: Any? = null
+    var strResult: String? = null
+
     @SerializedName("strCircuit")
     @Expose
-    var strCircuit: Any? = null
+    var strCircuit: String? = null
+
     @SerializedName("strCountry")
     @Expose
-    var strCountry: Any? = null
+    var strCountry: String? = null
+
     @SerializedName("strCity")
     @Expose
-    var strCity: Any? = null
+    var strCity: String? = null
+
     @SerializedName("strPoster")
     @Expose
-    var strPoster: Any? = null
+    var strPoster: String? = null
+
     @SerializedName("strFanart")
     @Expose
-    var strFanart: Any? = null
+    var strFanart: String? = null
+
     @SerializedName("strThumb")
     @Expose
-    var strThumb: Any? = null
+    var strThumb: String? = null
+
     @SerializedName("strBanner")
     @Expose
-    var strBanner: Any? = null
+    var strBanner: String? = null
+
     @SerializedName("strMap")
     @Expose
-    var strMap: Any? = null
+    var strMap: String? = null
+
     @SerializedName("strLocked")
     @Expose
     var strLocked: String? = null
+
+    constructor(parcel: Parcel) : this() {
+        idEvent = parcel.readString()
+        idSoccerXML = parcel.readString()
+        strEvent = parcel.readString()
+        strFilename = parcel.readString()
+        strSport = parcel.readString()
+        idLeague = parcel.readString()
+        strLeague = parcel.readString()
+        strSeason = parcel.readString()
+        strDescriptionEN = parcel.readString()
+        strHomeTeam = parcel.readString()
+        strAwayTeam = parcel.readString()
+        intHomeScore = parcel.readString()
+        intRound = parcel.readString()
+        intAwayScore = parcel.readString()
+        intSpectators = parcel.readString()
+        strHomeGoalDetails = parcel.readString()
+        strHomeRedCards = parcel.readString()
+        strHomeYellowCards = parcel.readString()
+        strHomeLineupGoalkeeper = parcel.readString()
+        strHomeLineupDefense = parcel.readString()
+        strHomeLineupMidfield = parcel.readString()
+        strHomeLineupForward = parcel.readString()
+        strHomeLineupSubstitutes = parcel.readString()
+        strHomeFormation = parcel.readString()
+        strAwayRedCards = parcel.readString()
+        strAwayYellowCards = parcel.readString()
+        strAwayGoalDetails = parcel.readString()
+        strAwayLineupGoalkeeper = parcel.readString()
+        strAwayLineupDefense = parcel.readString()
+        strAwayLineupMidfield = parcel.readString()
+        strAwayLineupForward = parcel.readString()
+        strAwayLineupSubstitutes = parcel.readString()
+        strAwayFormation = parcel.readString()
+        intHomeShots = parcel.readString()
+        intAwayShots = parcel.readString()
+        dateEvent = parcel.readString()
+        strDate = parcel.readString()
+        strTime = parcel.readString()
+        strTVStation = parcel.readString()
+        idHomeTeam = parcel.readString()
+        idAwayTeam = parcel.readString()
+        strResult = parcel.readString()
+        strCircuit = parcel.readString()
+        strCountry = parcel.readString()
+        strCity = parcel.readString()
+        strPoster = parcel.readString()
+        strFanart = parcel.readString()
+        strThumb = parcel.readString()
+        strBanner = parcel.readString()
+        strMap = parcel.readString()
+        strLocked = parcel.readString()
+    }
+
+    override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeString(idEvent)
+        parcel.writeString(idSoccerXML)
+        parcel.writeString(strEvent)
+        parcel.writeString(strFilename)
+        parcel.writeString(strSport)
+        parcel.writeString(idLeague)
+        parcel.writeString(strLeague)
+        parcel.writeString(strSeason)
+        parcel.writeString(strDescriptionEN)
+        parcel.writeString(strHomeTeam)
+        parcel.writeString(strAwayTeam)
+        parcel.writeString(intHomeScore)
+        parcel.writeString(intRound)
+        parcel.writeString(intAwayScore)
+        parcel.writeString(intSpectators)
+        parcel.writeString(strHomeGoalDetails)
+        parcel.writeString(strHomeRedCards)
+        parcel.writeString(strHomeYellowCards)
+        parcel.writeString(strHomeLineupGoalkeeper)
+        parcel.writeString(strHomeLineupDefense)
+        parcel.writeString(strHomeLineupMidfield)
+        parcel.writeString(strHomeLineupForward)
+        parcel.writeString(strHomeLineupSubstitutes)
+        parcel.writeString(strHomeFormation)
+        parcel.writeString(strAwayRedCards)
+        parcel.writeString(strAwayYellowCards)
+        parcel.writeString(strAwayGoalDetails)
+        parcel.writeString(strAwayLineupGoalkeeper)
+        parcel.writeString(strAwayLineupDefense)
+        parcel.writeString(strAwayLineupMidfield)
+        parcel.writeString(strAwayLineupForward)
+        parcel.writeString(strAwayLineupSubstitutes)
+        parcel.writeString(strAwayFormation)
+        parcel.writeString(intHomeShots)
+        parcel.writeString(intAwayShots)
+        parcel.writeString(dateEvent)
+        parcel.writeString(strDate)
+        parcel.writeString(strTime)
+        parcel.writeString(strTVStation)
+        parcel.writeString(idHomeTeam)
+        parcel.writeString(idAwayTeam)
+        parcel.writeString(strResult)
+        parcel.writeString(strCircuit)
+        parcel.writeString(strCountry)
+        parcel.writeString(strCity)
+        parcel.writeString(strPoster)
+        parcel.writeString(strFanart)
+        parcel.writeString(strThumb)
+        parcel.writeString(strBanner)
+        parcel.writeString(strMap)
+        parcel.writeString(strLocked)
+    }
+
+    override fun describeContents(): Int {
+        return 0
+    }
+
+    companion object CREATOR : Parcelable.Creator<Event> {
+        override fun createFromParcel(parcel: Parcel): Event {
+            return Event(parcel)
+        }
+
+        override fun newArray(size: Int): Array<Event?> {
+            return arrayOfNulls(size)
+        }
+    }
 
 }

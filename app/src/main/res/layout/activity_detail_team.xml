@@ -1,85 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    tools:context=".ui.activity.DetailTeamActivity">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
 
-    <android.support.design.widget.AppBarLayout
-        android:id="@+id/app_bar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fitsSystemWindows="true"
-        android:theme="@style/AppTheme.AppBarOverlay">
+    <data>
 
-        <android.support.design.widget.CollapsingToolbarLayout
-            android:id="@+id/toolbar_layout"
+        <variable
+                name="team"
+                type="com.rafcode.schedulefootball.api.response.Team" />
+    </data>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fitsSystemWindows="true"
-            app:contentScrim="?attr/colorPrimary"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed"
-            app:toolbarId="@+id/toolbar">
+            tools:context=".ui.activity.DetailTeamActivity">
 
-            <LinearLayout
-                android:id="@+id/llHead"
+        <com.google.android.material.appbar.AppBarLayout
+                android:id="@+id/appBar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/toolbar"
-                android:layout_marginTop="?attr/actionBarSize"
-                android:background="@color/colorPrimary"
-                android:orientation="vertical"
-                android:padding="10dp">
+                android:fitsSystemWindows="true"
+                android:theme="@style/AppTheme.AppBarOverlay">
 
-                <ImageView
-                    android:id="@+id/ivTeam"
+            <com.google.android.material.appbar.CollapsingToolbarLayout
+                    android:id="@+id/toolbarLayout"
                     android:layout_width="match_parent"
-                    android:layout_height="70dp" />
+                    android:layout_height="match_parent"
+                    android:fitsSystemWindows="true"
+                    app:contentScrim="?attr/colorPrimary"
+                    app:layout_scrollFlags="scroll|exitUntilCollapsed"
+                    app:toolbarId="@+id/toolbar">
 
-                <TextView
-                    android:id="@+id/tvTeam"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:gravity="center"
-                    android:text="Nama Team"
-                    android:textColor="@color/white"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
+                <LinearLayout
+                        android:id="@+id/llHead"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/toolbar"
+                        android:layout_marginTop="?attr/actionBarSize"
+                        android:background="@color/colorPrimary"
+                        android:orientation="vertical"
+                        android:padding="10dp">
 
-                <TextView
-                    android:id="@+id/tvYear"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:gravity="center"
-                    android:text="Tahun Team"
-                    android:textColor="@color/white"
-                    android:textSize="14sp" />
+                    <ImageView
+                            android:id="@+id/ivTeam"
+                            android:layout_width="match_parent"
+                            android:layout_height="70dp" />
 
-                <TextView
-                    android:id="@+id/tvStadion"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:gravity="center"
-                    android:text="Stadion Team"
-                    android:textColor="@color/white"
-                    android:textSize="14sp" />
-            </LinearLayout>
+                    <TextView
+                            android:id="@+id/tvTeam"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:gravity="center"
+                            android:text="@{team.strTeam}"
+                            android:textColor="@color/white"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
 
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                app:layout_collapseMode="pin"
-                app:collapseContentDescription=""
-                app:popupTheme="@style/AppTheme.PopupOverlay" />
-        </android.support.design.widget.CollapsingToolbarLayout>
-    </android.support.design.widget.AppBarLayout>
+                    <TextView
+                            android:id="@+id/tvYear"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:gravity="center"
+                            android:text="@{team.intFormedYear}"
+                            android:textColor="@color/white"
+                            android:textSize="14sp" />
 
-    <include layout="@layout/content_detail_team" />
+                    <TextView
+                            android:id="@+id/tvStadion"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:gravity="center"
+                            android:text="@{team.strStadium}"
+                            android:textColor="@color/white"
+                            android:textSize="14sp" />
+                </LinearLayout>
 
-</android.support.design.widget.CoordinatorLayout>
+                <androidx.appcompat.widget.Toolbar
+                        android:id="@+id/toolbar"
+                        android:layout_width="match_parent"
+                        android:layout_height="?attr/actionBarSize"
+                        app:collapseContentDescription=""
+                        app:layout_collapseMode="pin"
+                        app:popupTheme="@style/AppTheme.PopupOverlay" />
+            </com.google.android.material.appbar.CollapsingToolbarLayout>
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <include
+                android:id="@+id/layout"
+                layout="@layout/content_detail_team" />
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</layout>

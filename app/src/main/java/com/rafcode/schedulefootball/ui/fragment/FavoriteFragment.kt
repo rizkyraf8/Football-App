@@ -1,37 +1,29 @@
 package com.rafcode.schedulefootball.ui.fragment
 
-import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v4.view.ViewPager
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import androidx.viewpager.widget.ViewPager
 import com.rafcode.schedulefootball.R
+import com.rafcode.schedulefootball.databinding.FragmentMatchLayoutBinding
 import com.rafcode.schedulefootball.utils.ViewPagerAdapter
-import kotlinx.android.synthetic.main.fragment_match_layout.*
 
+class FavoriteFragment : BaseFragment<FragmentMatchLayoutBinding>() {
 
-class FavoriteFragment : Fragment() {
-
-    private var fragment: FavoriteFragment? = null
-
-    fun newInstance(): FavoriteFragment {
-        if (fragment == null) {
-            fragment = FavoriteFragment()
+    object Companion {
+        fun newInstance(): FavoriteFragment {
+            return FavoriteFragment()
         }
-        return fragment as FavoriteFragment
     }
 
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_match_layout, container, false)
-
+    override fun layout(): Int {
+        return R.layout.fragment_match_layout
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onFragmentCreated() {
         setupViewPager()
-        tlMenu.setupWithViewPager(vpLayout)
+        binding.tlMenu.setupWithViewPager(binding.vpLayout)
+    }
+
+    override fun onFragmentClick() {
+
     }
 
     private fun setupViewPager() {
@@ -39,14 +31,18 @@ class FavoriteFragment : Fragment() {
         val adapter = ViewPagerAdapter(childFragmentManager)
         adapter.addFragment(FavoriteMatchFragment().getInstance(), "Match")
         adapter.addFragment(FavoriteTeamFragment().getInstance(), "Team")
-        vpLayout.adapter = adapter
-        vpLayout.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
-            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+        binding.vpLayout.adapter = adapter
+        binding.vpLayout.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+            override fun onPageScrolled(
+                position: Int,
+                positionOffset: Float,
+                positionOffsetPixels: Int
+            ) {
 
             }
 
             override fun onPageSelected(position: Int) {
-                val fragment = adapter.instantiateItem(vpLayout, position) as Fragment
+//                val fragment = adapter.instantiateItem(binding.vpLayout, position) as Fragment
             }
 
             override fun onPageScrollStateChanged(state: Int) {

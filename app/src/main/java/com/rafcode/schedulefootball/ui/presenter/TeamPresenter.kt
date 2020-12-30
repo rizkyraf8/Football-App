@@ -1,36 +1,39 @@
 package com.rafcode.schedulefootball.ui.presenter
 
-import com.rafcode.schedulefootball.api.response.Teams
+import com.rafcode.schedulefootball.api.response.TeamResponse
 import com.rafcode.schedulefootball.repository.ApiRepository
 import com.rafcode.schedulefootball.repository.ApiRepositoryCallback
-import com.rafcode.schedulefootball.ui.view.TeamView
+import com.rafcode.schedulefootball.repository.TeamView
 
 class TeamPresenter(private val view: TeamView, private val apiRepository: ApiRepository) {
 
-    fun getTeamLeague(id: String) {
+    fun getTeamLeague(token: String, id: String) {
         view.onShowLoadingTeam()
-        apiRepository.getTeamLeague(id, object : ApiRepositoryCallback<Teams?> {
-            override fun onDataLoaded(data: Teams?) {
+        apiRepository.getTeamLeague(token, id, object : ApiRepositoryCallback<TeamResponse?> {
+            override fun onDataLoaded(data: TeamResponse?) {
+                view.onHideLoadingTeam()
                 view.onDataLoaded(data)
             }
 
             override fun onDataError() {
+                view.onHideLoadingTeam()
                 view.onDataError()
             }
         })
-        view.onHideLoadingTeam()
     }
-    fun getTeamSearch(team: String) {
+
+    fun getTeamSearch(token: String, team: String) {
         view.onShowLoadingTeam()
-        apiRepository.getSearchTeam(team, object : ApiRepositoryCallback<Teams?> {
-            override fun onDataLoaded(data: Teams?) {
+        apiRepository.getSearchTeam(token, team, object : ApiRepositoryCallback<TeamResponse?> {
+            override fun onDataLoaded(data: TeamResponse?) {
+                view.onHideLoadingTeam()
                 view.onDataLoaded(data)
             }
 
             override fun onDataError() {
+                view.onHideLoadingTeam()
                 view.onDataError()
             }
         })
-        view.onHideLoadingTeam()
     }
 }

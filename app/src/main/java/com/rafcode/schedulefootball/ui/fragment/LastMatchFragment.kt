@@ -1,34 +1,32 @@
 package com.rafcode.schedulefootball.ui.fragment
 
-import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v4.widget.SwipeRefreshLayout
-import android.support.v7.widget.LinearLayoutManager
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.rafcode.schedulefootball.R
 import com.rafcode.schedulefootball.api.response.Event
-import com.rafcode.schedulefootball.api.response.Events
+import com.rafcode.schedulefootball.api.response.EventResponse
 import com.rafcode.schedulefootball.api.response.League
+import com.rafcode.schedulefootball.databinding.FragmentMatchBinding
 import com.rafcode.schedulefootball.repository.ApiRepository
+import com.rafcode.schedulefootball.repository.MatchView
 import com.rafcode.schedulefootball.ui.adapter.MatchAdapter
 import com.rafcode.schedulefootball.ui.presenter.MatchPresenter
-import com.rafcode.schedulefootball.ui.view.MatchView
 import com.rafcode.schedulefootball.utils.database
 import com.rafcode.schedulefootball.utils.database.LeagueDatabase
-import kotlinx.android.synthetic.main.fragment_match.*
 import org.jetbrains.anko.db.classParser
 import org.jetbrains.anko.db.select
 
 
-class LastMatchFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
+class LastMatchFragment : BaseFragment<FragmentMatchBinding>(),
+    SwipeRefreshLayout.OnRefreshListener {
+
     private var fragment: LastMatchFragment? = null
 
-    lateinit var mAdapter: MatchAdapter
-    var mEvent = ArrayList<Event>()
+    private lateinit var mAdapter: MatchAdapter
+    private var mEvent = ArrayList<Event>()
 
     private lateinit var listLeagues: ArrayList<League>
     private lateinit var matchPresenter: MatchPresenter
@@ -41,30 +39,32 @@ class LastMatchFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
         return fragment as LastMatchFragment
     }
 
-    fun clearInstance() {
-        if (fragment != null) fragment = null
-    }
-
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_match, container, false)
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        srlMatch.setOnRefreshListener(this)
+    override fun onFragmentCreated() {
+        binding.srlMatch.setOnRefreshListener(this)
 
         initRv()
         initLeague()
     }
 
+    override fun onFragmentClick() {
+
+    }
+
+    override fun layout(): Int {
+        return R.layout.fragment_match
+    }
+
     private fun initRv() {
-        val glmanager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
-        mAdapter = MatchAdapter(activity!!, mEvent, "last")
-        rvMatch.layoutManager = glmanager
-        rvMatch.adapter = mAdapter
-        rvMatch.hasFixedSize()
-        rvMatch.isNestedScrollingEnabled = true
+        val glmanager = LinearLayoutManager(
+            activity,
+            LinearLayoutManager.VERTICAL,
+            false
+        )
+        mAdapter = MatchAdapter(mEvent, "last")
+        binding.rvMatch.layoutManager = glmanager
+        binding.rvMatch.adapter = mAdapter
+        binding.rvMatch.hasFixedSize()
+        binding.rvMatch.isNestedScrollingEnabled = true
     }
 
     private fun initLeague() {
@@ -75,13 +75,13 @@ class LastMatchFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
             val result = select(LeagueDatabase.TABLE_LEAGUE)
             val league = result.parseList(classParser<LeagueDatabase>())
             league.forEach { data ->
-                var league = League()
-                league.idLeague = data.idLeague.toString()
-                league.strLeague = data.strLeague
-                league.strSport = data.strSport
-                league.strLeagueAlternate = data.strLeagueAlternate
+                val item = League()
+                item.idLeague = data.idLeague.toString()
+                item.strLeague = data.strLeague
+                item.strSport = data.strSport
+                item.strLeagueAlternate = data.strLeagueAlternate
 
-                listLeagues.add(league)
+                listLeagues.add(item)
             }
 
         }
@@ -95,17 +95,26 @@ class LastMatchFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
             spinnerLeague.add(data.strLeague.toString())
         }
 
-        val adapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, spinnerLeague)
+        val adapter = ArrayAdapter<String>(
+            requireActivity(),
+            android.R.layout.simple_spinner_item,
+            spinnerLeague
+        )
 
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        spinner.adapter = adapter
+        binding.spinner.adapter = adapter
 
-        spinner?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+        binding.spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(parent: AdapterView<*>?) {
 
             }
 
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
                 initMatch(listLeagues[position].idLeague.toString())
             }
 
@@ -114,31 +123,31 @@ class LastMatchFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
 
     fun initMatch(id: String) {
         mAdapter.clear()
-        pbLoading.visibility = View.VISIBLE
+        binding.pbLoading.visibility = View.VISIBLE
         matchPresenter = MatchPresenter(object : MatchView {
             override fun onShowLoadingMatch() {
-                srlMatch.isRefreshing = true
+//                binding.srlMatch.isRefreshing = true
             }
 
             override fun onHideLoadingMatch() {
-                srlMatch.isRefreshing = false
+                binding.srlMatch.isRefreshing = false
             }
 
-            override fun onDataLoaded(data: Events?) {
-                data?.events?.forEach { data ->
-                    mAdapter.reCreate(data)
+            override fun onDataLoaded(data: EventResponse?) {
+                data?.events?.let { item ->
+                    mAdapter.reCreate(item)
                 }
-                pbLoading.visibility = View.GONE
+                binding.pbLoading.visibility = View.GONE
             }
 
             override fun onDataError() {
             }
         }, ApiRepository())
 
-        matchPresenter.getLastMatch(id)
+        matchPresenter.getLastMatch(getUser().token.toString(), id)
     }
 
     override fun onRefresh() {
-        initMatch(listLeagues[spinner.selectedItemPosition].idLeague.toString())
+        initMatch(listLeagues[binding.spinner.selectedItemPosition].idLeague.toString())
     }
 }

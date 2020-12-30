@@ -2,60 +2,66 @@ package com.rafcode.schedulefootball.ui.activity
 
 import android.app.SearchManager
 import android.content.Context
-import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.SearchView
 import android.view.Menu
 import android.view.View
+import androidx.appcompat.widget.SearchView
+import androidx.databinding.DataBindingUtil
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.rafcode.schedulefootball.R
 import com.rafcode.schedulefootball.api.response.Event
 import com.rafcode.schedulefootball.api.response.EventsSearch
+import com.rafcode.schedulefootball.databinding.ActivitySearchMatchBinding
 import com.rafcode.schedulefootball.repository.ApiRepository
+import com.rafcode.schedulefootball.repository.MatchSeacrhView
 import com.rafcode.schedulefootball.ui.adapter.MatchAdapter
 import com.rafcode.schedulefootball.ui.presenter.MatchSearchPresenter
-import com.rafcode.schedulefootball.ui.view.MatchSeacrhView
-import kotlinx.android.synthetic.main.activity_search_match.*
-import kotlinx.android.synthetic.main.content_search_match.*
 
-class SearchMatchActivity : AppCompatActivity() {
+class SearchMatchActivity : BaseActivity<ActivitySearchMatchBinding>() {
 
-    lateinit var mAdapter: MatchAdapter
-    var mEvent = ArrayList<Event>()
-    var key = ""
+    override fun getViewBinding(): ActivitySearchMatchBinding {
+        return DataBindingUtil.setContentView(this, R.layout.activity_search_match)
+    }
 
-    private lateinit var matchPresenter: MatchSearchPresenter
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_search_match)
-
-        key = intent.getStringExtra("key")
-
+    override fun onActivityCreated() {
         initToolbar()
-
         initRv()
         initMatch(key)
     }
 
+    override fun onActivityClick() {
+
+    }
+
+    lateinit var mAdapter: MatchAdapter
+    private var mEvent = ArrayList<Event>()
+    private val key: String by lazy {
+        intent.getStringExtra("key").toString()
+    }
+
+    private lateinit var matchPresenter: MatchSearchPresenter
+
     private fun initToolbar() {
-        setSupportActionBar(toolbar)
+        setSupportActionBar(binding.toolbar)
         supportActionBar?.title = key
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
     private fun initRv() {
-        val glmanager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-        mAdapter = MatchAdapter(this, mEvent, "search")
-        rvMatch.layoutManager = glmanager
-        rvMatch.adapter = mAdapter
-        rvMatch.hasFixedSize()
-        rvMatch.isNestedScrollingEnabled = true
+        val glmanager = LinearLayoutManager(
+            this,
+            LinearLayoutManager.VERTICAL,
+            false
+        )
+        mAdapter = MatchAdapter(mEvent, "search")
+        binding.layout.rvMatch.layoutManager = glmanager
+        binding.layout.rvMatch.adapter = mAdapter
+        binding.layout.rvMatch.hasFixedSize()
+        binding.layout.rvMatch.isNestedScrollingEnabled = true
     }
 
     private fun initMatch(event: String) {
         mAdapter.clear()
-        pbLoading.visibility = View.VISIBLE
+        binding.layout.pbLoading.visibility = View.VISIBLE
         matchPresenter = MatchSearchPresenter(object : MatchSeacrhView {
             override fun onShowLoadingMatch() {
             }
@@ -64,17 +70,17 @@ class SearchMatchActivity : AppCompatActivity() {
             }
 
             override fun onDataLoaded(data: EventsSearch?) {
-                data?.events?.forEach { data ->
-                    mAdapter.reCreate(data)
+                data?.events?.let { item ->
+                    mAdapter.reCreate(item)
                 }
-                pbLoading.visibility = View.GONE
+                binding.layout.pbLoading.visibility = View.GONE
             }
 
             override fun onDataError() {
             }
         }, ApiRepository())
 
-        matchPresenter.searchMatch(event)
+        matchPresenter.searchMatch(getUser().token.toString(), event)
     }
 
 

@@ -1,29 +1,37 @@
 package com.rafcode.schedulefootball.ui.fragment
 
-import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v4.widget.SwipeRefreshLayout
-import android.support.v7.widget.LinearLayoutManager
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.gson.Gson
 import com.rafcode.schedulefootball.R
 import com.rafcode.schedulefootball.api.response.Team
+import com.rafcode.schedulefootball.databinding.FragmentTeamFavoriteBinding
 import com.rafcode.schedulefootball.ui.adapter.TeamAdapter
 import com.rafcode.schedulefootball.utils.database
-import com.rafcode.schedulefootball.utils.database.FavoriteMatch
 import com.rafcode.schedulefootball.utils.database.FavoriteTeam
-import kotlinx.android.synthetic.main.fragment_match.*
 import org.jetbrains.anko.db.classParser
 import org.jetbrains.anko.db.select
 
-open class FavoriteTeamFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
+open class FavoriteTeamFragment : BaseFragment<FragmentTeamFavoriteBinding>(),
+    SwipeRefreshLayout.OnRefreshListener {
 
     private var fragment: FavoriteTeamFragment? = null
     lateinit var mAdapter: TeamAdapter
     var mTeam = ArrayList<Team>()
 
+    override fun onFragmentCreated() {
+        initAdapter()
+        binding.srlMatch.setOnRefreshListener(this)
+    }
+
+    override fun onFragmentClick() {
+
+    }
+
+    override fun layout(): Int {
+        return R.layout.fragment_team_favorite
+    }
 
     fun getInstance(): FavoriteTeamFragment {
         if (fragment == null) {
@@ -33,26 +41,17 @@ open class FavoriteTeamFragment : Fragment(), SwipeRefreshLayout.OnRefreshListen
         return fragment as FavoriteTeamFragment
     }
 
-    fun clearInstance() {
-        if (fragment != null) fragment = null
-    }
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_team_favorite, container, false)
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        srlMatch.setOnRefreshListener(this)
-
-        val glmanager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
+    private fun initAdapter() {
+        val glmanager = LinearLayoutManager(
+            activity,
+            LinearLayoutManager.VERTICAL,
+            false
+        )
         mAdapter = TeamAdapter(activity!!, mTeam)
-        rvMatch.layoutManager = glmanager
-        rvMatch.adapter = mAdapter
-        rvMatch.hasFixedSize()
-        rvMatch.isNestedScrollingEnabled = true
-
+        binding.rvMatch.layoutManager = glmanager
+        binding.rvMatch.adapter = mAdapter
+        binding.rvMatch.hasFixedSize()
+        binding.rvMatch.isNestedScrollingEnabled = true
     }
 
     override fun onResume() {
@@ -64,19 +63,24 @@ open class FavoriteTeamFragment : Fragment(), SwipeRefreshLayout.OnRefreshListen
         initData()
     }
 
-    fun initData() {
-        if (srlMatch.isRefreshing) srlMatch.isRefreshing = false
+    private fun initData() {
+        if (binding.srlMatch.isRefreshing) binding.srlMatch.isRefreshing = false
         activity!!.database.use {
             mAdapter.clear()
             val result = select(FavoriteTeam.TABLE_TEAM)
             val favorite = result.parseList(classParser<FavoriteTeam>())
-
+            val list = ArrayList<Team>()
             favorite.forEach { data ->
                 val match = Gson().fromJson(data.gson, Team::class.java)
-                mAdapter.reCreate(match)
+                list.add(match)
             }
+            mAdapter.reCreate(list)
 
+            if (mAdapter.getData().isEmpty()) {
+                binding.tvNoData.visibility = View.VISIBLE
+            } else {
+                binding.tvNoData.visibility = View.GONE
+            }
         }
     }
-
 }
